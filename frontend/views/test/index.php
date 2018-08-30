@@ -1,1 +1,2 @@
-<h1>Hello, world!!!</h1>
+<?php
+echo \common\modules\chat\widgets\Chat::widget(['port' => 8083]);
