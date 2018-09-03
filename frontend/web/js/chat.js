@@ -1,6 +1,6 @@
 var webSocketPort = wsPort ? wsPort : 8083;
 var conn = new WebSocket('ws://localhost:' + webSocketPort);
-var idMessages = 'chatMessages';
+var itemList = document.getElementById('chatMessages');
 
 conn.onopen = function(e) {
     console.log("Connection established!");
@@ -11,6 +11,10 @@ conn.onerror = function (e) {
 };
 
 conn.onmessage = function(e) {
-    document.getElementById(idMessages).value = e.data + '\n' + document.getElementById(idMessages).value;
+    var item = document.createElement('p');
+
+    item.innerHTML = e.data;
+    itemList.appendChild(item);
+
     console.log(e.data);
 };
