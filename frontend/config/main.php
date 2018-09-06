@@ -42,6 +42,7 @@ return [
             'rules' => [
                 '<controller:[\w-]+>/<id:\d+>' => '<controller>/view',
                 '<controller:[\w-]+>s' => '<controller>/index',
+//                '<controller:(task|project|user)>s' => '<controller>/index',
             ],
         ],
     ],

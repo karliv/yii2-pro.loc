@@ -8,6 +8,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\validators\UniqueValidator;
 use yii\web\IdentityInterface;
+use mohorev\file\UploadImageBehavior;
 
 /**
  * User model
@@ -19,6 +20,7 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $auth_key
  * @property integer $status
+ * @property string avatar
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
@@ -29,14 +31,26 @@ use yii\web\IdentityInterface;
  * @property Task[] $tasks
  * @property Task[] $tasks0
  * @property Task[] $tasks1
+ *
+ * @mixin UploadImageBehavior
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    private $_password;
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
+    const STATUS_LABELS = [
+        self::STATUS_DELETED => 'удалён',
+        self::STATUS_ACTIVE => 'активен'
+    ];
+
     const SCENARIO_ADMIN_CREATE = 'admin_create';
     const SCENARIO_ADMIN_UPDATE = 'admin_update';
+
+    const AVATAR_PREVIEW = 'preview';
+    const AVATAR_MEDIUM = 'medium';
+    const AVATAR_ICO = 'ico';
+
+    private $_password;
 
 
     /**
@@ -54,6 +68,19 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             TimestampBehavior::className(),
+            [
+                'class' => UploadImageBehavior::class,
+                'attribute' => 'avatar',
+                'scenarios' => [self::SCENARIO_ADMIN_CREATE, self::SCENARIO_ADMIN_UPDATE],
+                //'placeholder' => '@app/modules/user/assets/images/userpic.jpg',
+                'path' => '@frontend/web/upload/user/{id}',
+                'url' => 'http://yii2-pro.loc/upload/user/{id}',
+                'thumbs' => [
+                    self::AVATAR_PREVIEW => ['width' => 400, 'quality' => 90],
+                    self::AVATAR_MEDIUM => ['width' => 45, 'height' => 45],
+                    self::AVATAR_ICO => ['width' => 30, 'height' => 30],
+                ],
+            ],
         ];
     }
 
@@ -63,13 +90,39 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            [['status', 'created_at', 'updated_at'], 'integer'],
+            [['username', 'password_hash', 'password_reset_token', 'email', 'auth_key'], 'string'],
+            [['username', 'email'], 'unique'],
+            ['avatar', 'image', 'extensions' => 'jpg, jpeg, gif, png', 'on' => ['insert', 'update']],
+            ['email', 'email'],
+
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
 
             [['username', 'password', 'email'], 'required', 'on' => self::SCENARIO_ADMIN_CREATE],
+            //['password', 'string', 'min' => 6, 'on' => [self::SCENARIO_ADMIN_CREATE, self::SCENARIO_ADMIN_UPDATE]],
             [['username', 'email'], 'required', 'on' => self::SCENARIO_ADMIN_UPDATE],
             ['email', 'email', 'on' => [self::SCENARIO_ADMIN_CREATE, self::SCENARIO_ADMIN_UPDATE]],
             ['username', UniqueValidator::class, 'on' => [self::SCENARIO_ADMIN_CREATE, self::SCENARIO_ADMIN_UPDATE]],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Username',
+            'auth_key' => 'Auth Key',
+            'password_hash' => 'Password Hash',
+            'password_reset_token' => 'Password Reset Token',
+            'email' => 'Email',
+            'status' => 'Status',
+            'avatar' => 'Avatar',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
 

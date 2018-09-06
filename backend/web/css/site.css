@@ -118,3 +118,24 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.navbar-nav > li > a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.navbar-nav > li > .control-icon {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.content-wrapper .content-header {
+    padding-top: 0;
+}
+
+.content-wrapper .content-header .breadcrumb {
+    left: 0;
+    float: initial;
+    padding: 7px 0;
+    position: relative;
+}
