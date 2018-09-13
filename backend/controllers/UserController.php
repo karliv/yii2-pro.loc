@@ -57,6 +57,21 @@ class UserController extends Controller
         ]);
     }
 
+    public function actionProfile()
+    {
+        $id = Yii::$app->user->id;
+        $model = $this->findModel($id);
+        $model->setScenario(User::SCENARIO_ADMIN_UPDATE);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
     /**
      * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.

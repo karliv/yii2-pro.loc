@@ -30,6 +30,7 @@ $user = Yii::$app->user->identity
                     ['label' => 'Home', 'url' => ['/']],
                     ['label' => 'Users', 'url' => ['/user/index']],
                     ['label' => 'Projects', 'url' => ['/project/index']],
+                    ['label' => 'Tasks', 'url' => ['/task/index']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                 ],
             ]

@@ -2,12 +2,14 @@
 
 namespace common\models;
 
+use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
+use lhs\Yii2SaveRelationsBehavior\SaveRelationsTrait;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "project".
+ * Project model
  *
  * @property int $id
  * @property string $title
@@ -18,17 +20,33 @@ use yii\behaviors\TimestampBehavior;
  * @property int $created_at
  * @property int $updated_at
  *
- * @property User $createdBy
- * @property User $updatedBy
+ * @property User $creator
+ * @property User $updater
  * @property ProjectUser[] $projectUsers
+ * @mixin SaveRelationsTrait
  */
 class Project extends \yii\db\ActiveRecord
 {
+    const RELATION_PROJECT_USERS = 'projectUsers';
+    const STATUS_NOT_ACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+    const STATUS_LABELS = [
+        self::STATUS_NOT_ACTIVE => 'неактивен',
+        self::STATUS_ACTIVE => 'активен'
+    ];
+
     public function behaviors()
     {
         return [
+            TimestampBehavior::className(),
             ['class' => TimestampBehavior::class],
             ['class' => BlameableBehavior::class],
+            'saveRelations' => [
+                'class'     => SaveRelationsBehavior::className(),
+                'relations' => [
+                    'projectUsers',
+                ],
+            ],
         ];
     }
 
@@ -47,9 +65,11 @@ class Project extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description', 'created_by', 'created_at'], 'required'],
+            [['title', 'description'], 'required'],
             [['description'], 'string'],
             [['active', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            ['active', 'default', 'value' => self::STATUS_ACTIVE],
+            ['active', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_NOT_ACTIVE]],
             [['title'], 'string', 'max' => 255],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
@@ -76,7 +96,7 @@ class Project extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCreatedBy()
+    public function getCreator()
     {
         return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
@@ -84,7 +104,7 @@ class Project extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUpdatedBy()
+    public function getUpdater()
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }

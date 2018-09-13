@@ -66,6 +66,8 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function behaviors()
     {
+        $host = Yii::$app->params['front.schema'] . Yii::$app->params['front.domain'];
+
         return [
             TimestampBehavior::className(),
             [
@@ -74,7 +76,7 @@ class User extends ActiveRecord implements IdentityInterface
                 'scenarios' => [self::SCENARIO_ADMIN_CREATE, self::SCENARIO_ADMIN_UPDATE],
                 //'placeholder' => '@app/modules/user/assets/images/userpic.jpg',
                 'path' => '@frontend/web/upload/user/{id}',
-                'url' => 'http://yii2-pro.loc/upload/user/{id}',
+                'url' => $host . '/upload/user/{id}',
                 'thumbs' => [
                     self::AVATAR_PREVIEW => ['width' => 400, 'quality' => 90],
                     self::AVATAR_MEDIUM => ['width' => 45, 'height' => 45],
@@ -100,7 +102,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
 
             [['username', 'password', 'email'], 'required', 'on' => self::SCENARIO_ADMIN_CREATE],
-            //['password', 'string', 'min' => 6, 'on' => [self::SCENARIO_ADMIN_CREATE, self::SCENARIO_ADMIN_UPDATE]],
+            ['password', 'string', 'min' => 6, 'on' => [self::SCENARIO_ADMIN_CREATE, self::SCENARIO_ADMIN_UPDATE]],
             [['username', 'email'], 'required', 'on' => self::SCENARIO_ADMIN_UPDATE],
             ['email', 'email', 'on' => [self::SCENARIO_ADMIN_CREATE, self::SCENARIO_ADMIN_UPDATE]],
             ['username', UniqueValidator::class, 'on' => [self::SCENARIO_ADMIN_CREATE, self::SCENARIO_ADMIN_UPDATE]],
@@ -248,7 +250,9 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function setPassword($password)
     {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+        if($password) {
+            $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+        }
         $this->_password = $password;
     }
 

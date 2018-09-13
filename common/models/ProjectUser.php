@@ -17,6 +17,15 @@ use Yii;
  */
 class ProjectUser extends \yii\db\ActiveRecord
 {
+    const ROLE_DEVELOPER = 'developer';
+    CONST ROLE_MANAGER = 'manager';
+    CONST ROLE_TESTER = 'tester';
+    const ROLE_LABELS = [
+        self::ROLE_DEVELOPER => 'разработчик',
+        self::ROLE_MANAGER => 'менеджер',
+        self::ROLE_TESTER => 'тестер'
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -75,5 +84,10 @@ class ProjectUser extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \common\models\query\ProjectUserQuery(get_called_class());
+    }
+
+    public static function primaryKey()
+    {
+        return ['project_id', 'user_id'];
     }
 }
