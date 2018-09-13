@@ -9,6 +9,12 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'emailService' => [
+            'class' => \common\services\EmailService::class
+        ],
+        'projectService' => [
+            'class' => \common\services\ProjectService::class,
+        ]
     ],
     'modules' => [
         'chat' => [

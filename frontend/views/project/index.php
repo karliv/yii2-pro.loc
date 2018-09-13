@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use common\models\Project;
+use common\models\ProjectUser;
+
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\ProjectSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -22,21 +25,49 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'title',
+            [
+                'attribute' => 'title',
+                'value' => function(Project $model) {
+                    return Html::a($model->title, ['update', 'id' => $model->id]);
+                },
+                'format' => 'html'
+            ],
+            [
+                'attribute' => Project::RELATION_PROJECT_USERS.'role',
+                'value' => function(Project $model) {
+                    //return join(', ', $model->getProjectUsers()->select('role')->column());
+                    return join(', ', $model->getProjectUsers()->select('role')
+                            ->where(['user_id' => $model->creator->id])->column());
+                },
+                'format' => 'html'
+            ],
             [
                 'attribute' => 'description',
                 'format' => 'text',
                 'options' => [
-                    'width' => 70
+                    'width' => '70px'
                 ]
             ],
-            'created_by',
-            'updated_by',
+            [
+                'attribute' => 'created_by',
+                'label' => 'Creator',
+                'value' => function(Project $model) {
+                    return Html::a($model->creator->username, ['user/view', 'id' => $model->creator->id]);
+                },
+                'format' => 'html'
+            ],
+            [
+                'attribute' => 'updated_by',
+                'label' => 'Updater',
+                'value' => function(Project $model) {
+                    return Html::a($model->creator->username, ['user/view', 'id' => $model->creator->id]);
+                },
+                'format' => 'html'
+            ],
             'created_at:datetime',
             'updated_at:datetime',
 
