@@ -42,8 +42,8 @@ AppAsset::register($this);
         ['label' => 'Чат', 'url' => ['/chat-sample/index']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => 'Зарегистрироваться', 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => 'Авторизоваться', 'url' => ['/site/login']];
     } else {
         $menuItems[] = ['label' => 'Пользователи', 'url' => ['/user/index']];
         $menuItems[] = ['label' => 'Проекты', 'url' => ['/project/index']];
@@ -52,7 +52,7 @@ AppAsset::register($this);
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
+                'Выйти (' . Yii::$app->user->identity->username . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()

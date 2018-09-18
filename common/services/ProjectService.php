@@ -2,9 +2,10 @@
 
 namespace common\services;
 
-
+use Yii;
 use common\models\Project;
 use common\models\ProjectUser;
+use common\models\Task;
 use common\models\User;
 use yii\base\Component;
 use yii\base\Event;
@@ -42,6 +43,12 @@ class ProjectService extends Component
 
     public function canTake(Project $project, User $user) {
         return $this->hasRoles($project, $user, [ProjectUser::ROLE_DEVELOPER]);
+    }
+
+    public function takeTask(Task $task, User $user) {
+        $task->executor_id = Yii::$app->user->id;
+        $task->started_at = time();
+        return $task->save();
     }
 
     /**

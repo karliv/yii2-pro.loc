@@ -1,5 +1,6 @@
 <?php
 
+use common\models\ProjectUser;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -13,6 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="task-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <?php if (Yii::$app->projectService->hasRole($model->project, Yii::$app->user->identity, ProjectUser::ROLE_MANAGER)) : ?>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -25,6 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
+    <?php endif; ?>
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -33,12 +37,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
             'estimation',
             'executor_id',
-            'started_at',
-            'completed_at',
-            'created_by',
-            'updated_by',
-            'created_at',
-            'updated_at',
+            'started_at:datetime',
+            'completed_at:datetime',
+            'created_by:datetime',
+            'updated_by:datetime',
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 
