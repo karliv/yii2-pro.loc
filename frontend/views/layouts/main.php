@@ -36,18 +36,19 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
-        ['label' => 'Chat', 'url' => ['/chat-sample/index']],
-        ['label' => 'Users', 'url' => ['/user/index']],
-        ['label' => 'Tasks', 'url' => ['/task/index']],
-        ['label' => 'Projects', 'url' => ['/project/index']],
+        ['label' => 'Главная', 'url' => ['/site/index']],
+        ['label' => 'О нас', 'url' => ['/site/about']],
+        ['label' => 'Контакты', 'url' => ['/site/contact']],
+        ['label' => 'Чат', 'url' => ['/chat-sample/index']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
+        $menuItems[] = ['label' => 'Пользователи', 'url' => ['/user/index']];
+        $menuItems[] = ['label' => 'Проекты', 'url' => ['/project/index']];
+        $menuItems[] = ['label' => 'Задачи', 'url' => ['/task/index']];
+        $menuItems[] = ['label' => 'Личный кабинет', 'url' => ['/user/profile']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(

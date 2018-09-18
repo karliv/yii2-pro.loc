@@ -85,9 +85,4 @@ class ProjectUser extends \yii\db\ActiveRecord
     {
         return new \common\models\query\ProjectUserQuery(get_called_class());
     }
-
-    public static function primaryKey()
-    {
-        return ['project_id', 'user_id'];
-    }
 }

@@ -35,6 +35,24 @@ return [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['info'],
+                    'categories' => ['pay'],
+                    'logFile' => '@runtime/logs/pay.log'
+                ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['info'],
+                    'categories' => ['login_access'],
+                    'logFile' => '@runtime/logs/lg_access.log'
+                ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['error'],
+                    'categories' => ['login_denied'],
+                    'logFile' => '@runtime/logs/lg_denied.log'
+                ],
             ],
         ],
         'errorHandler' => [
@@ -48,7 +66,7 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     //'controller' => '../modules/api/controllers/user',
-                    'controller' => ['api/user']
+                    'controller' => ['api/user', 'api/project']
                 ],
                 '<controller:[\w-]+>/<id:\d+>' => '<controller>/view',
                 //'<controller:[\w-]+>s' => '<controller>/index',

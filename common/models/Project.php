@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\models\query\ProjectUserQuery;
 use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
 use lhs\Yii2SaveRelationsBehavior\SaveRelationsTrait;
 use Yii;
@@ -38,13 +39,12 @@ class Project extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
             ['class' => TimestampBehavior::class],
             ['class' => BlameableBehavior::class],
             'saveRelations' => [
                 'class'     => SaveRelationsBehavior::className(),
                 'relations' => [
-                    'projectUsers',
+                    self::RELATION_PROJECT_USERS,
                 ],
             ],
         ];
@@ -110,7 +110,7 @@ class Project extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ProjectUserQuery|\yii\db\ActiveQuery
      */
     public function getProjectUsers()
     {

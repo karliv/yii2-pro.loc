@@ -19,39 +19,42 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Project', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             [
                 'attribute' => 'title',
                 'value' => function(Project $model) {
-                    return Html::a($model->title, ['update', 'id' => $model->id]);
+                    return Html::a($model->title, ['view', 'id' => $model->id]);
                 },
                 'format' => 'html'
             ],
             [
                 'attribute' => Project::RELATION_PROJECT_USERS.'role',
+                'label' => 'Role',
                 'value' => function(Project $model) {
-                    //return join(', ', $model->getProjectUsers()->select('role')->column());
-                    return join(', ', $model->getProjectUsers()->select('role')
-                            ->where(['user_id' => $model->creator->id])->column());
+//                    return join(', ', $model->getProjectUsers()->select('role')
+//                            ->where(['user_id' => \Yii::$app->user->id])->column());
+                    return join(', ', Yii::$app->projectService->getRoles($model,
+                        Yii::$app->user->identity));
                 },
                 'format' => 'html'
             ],
             [
-                'attribute' => 'description',
-                'format' => 'text',
-                'options' => [
-                    'width' => '70px'
-                ]
+                'attribute' => 'active',
+                'filter' => Project::STATUS_LABELS,
+
+                'value' => function(Project $model){return Project::STATUS_LABELS[$model->active];}
             ],
+            //[
+            //    'attribute' => 'description',
+            //    'format' => 'html',
+            //    'options' => ['style' => 'color:#edd']
+            //],
             [
                 'attribute' => 'created_by',
                 'label' => 'Creator',
@@ -64,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'updated_by',
                 'label' => 'Updater',
                 'value' => function(Project $model) {
-                    return Html::a($model->creator->username, ['user/view', 'id' => $model->creator->id]);
+                    return Html::a($model->updater->username, ['user/view', 'id' => $model->updater->id]);
                 },
                 'format' => 'html'
             ],

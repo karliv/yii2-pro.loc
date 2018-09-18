@@ -19,18 +19,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'username',
+            [
+                'attribute' => 'username',
+                //'value' => Html::a($model->username, ['user/view', 'id' => $model->id]),
+                'value' => function($data) {
+                    return Html::a($data->username, ['user/view', 'id' => $data->id]);
+                },
+                'format' => 'html'
+            ],
             'email:email',
             [
                 'attribute' => 'status',
@@ -40,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'created_at:datetime',
             'updated_at:datetime',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            //['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

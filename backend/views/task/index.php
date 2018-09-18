@@ -26,17 +26,28 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
             'title',
             'description:ntext',
             'estimation',
-            'executor_id',
-            //'started_at',
-            //'completed_at',
-            //'created_by',
-            //'updated_by',
-            //'created_at',
-            //'updated_at',
+            [
+                'attribute' => 'executor_id',
+                'value' => function($data) {
+                    return Html::a($data->executor->username, ['user/view', 'id' => $data->executor->id]);
+                },
+                'format' => 'html'
+            ],
+            'started_at:date',
+            'completed_at:date',
+            [
+                'attribute' => 'created_by',
+                'value' => 'creator.username'
+            ],
+            [
+                'attribute' => 'updated_by',
+                'value' => 'updater.username'
+            ],
+            'created_at:date',
+            'updated_at:date',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

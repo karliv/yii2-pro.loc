@@ -4,6 +4,7 @@ namespace common\services;
 
 
 use common\models\Project;
+use common\models\ProjectUser;
 use common\models\User;
 use yii\base\Component;
 use yii\base\Event;
@@ -22,6 +23,26 @@ class AssignRoleEvent extends Event
 class ProjectService extends Component
 {
     const  EVENT_ASSIGN_ROLE = 'event_assign_role';
+
+    public function getRoles(Project $project, User $user) {
+        return $project->getProjectUsers()->byUser($user->id)->select('role')->column();
+    }
+
+    public function hasRole(Project $project, User $user, $role) {
+        return in_array($role, $this->getRoles($project, $user));
+    }
+
+    public function hasRoles(Project $project, User $user, $roles) {
+        return in_array($this->getRoles($project, $user), $roles);
+    }
+
+    public function canUpdate(Project $project, User $user) {
+        return $this->hasRoles($project, $user, [ProjectUser::ROLE_MANAGER]);
+    }
+
+    public function canTake(Project $project, User $user) {
+        return $this->hasRoles($project, $user, [ProjectUser::ROLE_DEVELOPER]);
+    }
 
     /**
      * @param Project $project

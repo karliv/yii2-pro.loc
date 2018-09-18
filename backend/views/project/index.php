@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
 
-            'id',
+            //'id',
             'title',
 //            [
 //                'attribute' => 'description',
@@ -35,6 +35,15 @@ $this->params['breadcrumbs'][] = $this->title;
 //                    'width' => 70
 //                ]
 //            ],
+            [
+                'attribute' => Project::RELATION_PROJECT_USERS.'role',
+                'label' => 'Role',
+                'value' => function(Project $model) {
+                    return join(', ', $model->getProjectUsers()->select('role')
+                        ->where(['user_id' => \Yii::$app->user->id])->column());
+                },
+                'format' => 'html'
+            ],
             [
                 'attribute' => 'active',
                 'filter' => Project::STATUS_LABELS,

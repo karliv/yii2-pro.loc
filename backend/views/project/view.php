@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii2mod\comments\widgets\Comment;
 use common\models\Project;
 
 /* @var $this yii\web\View */
@@ -36,11 +37,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'active',
                 'value' => Project::STATUS_LABELS[$model->active]
             ],
-            'created_by',
-            'updated_by',
+            [
+                'attribute' => 'created_by',
+                'value' => $model->creator->username
+            ],
+            [
+                'attribute' => 'updated_by',
+                'value' => $model->updater->username
+            ],
             'created_at:datetime',
             'updated_at:datetime',
         ],
     ]) ?>
+
+    <?= Comment::widget([
+        'model' => $model,
+    ]); ?>
 
 </div>

@@ -72,7 +72,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        Yii::beginProfile($pr1 = __FILE__.__LINE__);
+        //Yii::info('success', 'pay');
+        $content = $this->render('index');
+        Yii::endProfile($pr1);
+        return $content;
     }
 
     /**
@@ -88,10 +92,11 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            Yii::info('success', 'login_access');
             return $this->goBack();
         } else {
+            Yii::info('error', 'login_denied');
             $model->password = '';
-
             return $this->render('login', [
                 'model' => $model,
             ]);

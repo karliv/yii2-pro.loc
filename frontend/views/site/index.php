@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
-
+Yii::beginProfile($pr1 = __FILE__.__LINE__);
 ?>
 <div class="site-index">
 
@@ -52,3 +52,5 @@ $this->title = 'My Yii Application';
 
     </div>
 </div>
+
+<?php Yii::endProfile($pr1); ?>

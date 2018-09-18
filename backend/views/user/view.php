@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii2mod\comments\widgets\Comment;
 use common\models\User;
 
 /* @var $this yii\web\View */
@@ -9,11 +10,12 @@ use common\models\User;
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $model->username;
+$this->title = 'Профиль пользователя: ' . $model->username;
 ?>
 <div class="user-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>Профиль пользователя: <?= Html::encode($model->username)?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -39,5 +41,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at:datetime',
         ],
     ]) ?>
+
+    <?= Comment::widget([
+        'model' => $model,
+    ]); ?>
 
 </div>

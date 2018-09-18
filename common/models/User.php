@@ -283,22 +283,6 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProjects()
-    {
-        return $this->hasMany(Project::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProjects0()
-    {
-        return $this->hasMany(Project::className(), ['updated_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getProjectUsers()
     {
         return $this->hasMany(ProjectUser::className(), ['user_id' => 'id']);
@@ -307,24 +291,58 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTasks()
+    public function getProjects()
     {
-        return $this->hasMany(Task::className(), ['created_by' => 'id']);
+        return $this->hasMany(Project::className(), ['id' => 'project_id'])->via('projectUsers');
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTasks0()
+    public function getAvatar()
     {
-        return $this->hasMany(Task::className(), ['executor_id' => 'id']);
+        return $this->getThumbUploadUrl('avatar', User::AVATAR_MEDIUM);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTasks1()
+    public function getUsername()
     {
-        return $this->hasMany(Task::className(), ['updated_by' => 'id']);
+        return $this->username;
     }
+
+//    /**
+//     * @return \yii\db\ActiveQuery
+//     */
+//    public function getProjects()
+//    {
+//        return $this->hasMany(Project::className(), ['created_by' => 'id']);
+//    }
+//
+//    /**
+//     * @return \yii\db\ActiveQuery
+//     */
+//    public function getProjects0()
+//    {
+//        return $this->hasMany(Project::className(), ['updated_by' => 'id']);
+//    }
+//
+//    /**
+//     * @return \yii\db\ActiveQuery
+//     */
+//    public function getTasks()
+//    {
+//        return $this->hasMany(Task::className(), ['created_by' => 'id']);
+//    }
+//
+//    /**
+//     * @return \yii\db\ActiveQuery
+//     */
+//    public function getTasks0()
+//    {
+//        return $this->hasMany(Task::className(), ['executor_id' => 'id']);
+//    }
+//
+//    /**
+//     * @return \yii\db\ActiveQuery
+//     */
+//    public function getTasks1()
+//    {
+//        return $this->hasMany(Task::className(), ['updated_by' => 'id']);
+//    }
 }
