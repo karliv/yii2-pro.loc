@@ -93,6 +93,7 @@ class UserController extends Controller
         $model->setScenario(User::SCENARIO_ADMIN_CREATE);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Пользователь создан');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -114,6 +115,7 @@ class UserController extends Controller
         $model->setScenario(User::SCENARIO_ADMIN_UPDATE);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Пользователь изменён');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

@@ -78,6 +78,7 @@ class ProjectController extends Controller
         $model = new Project();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Проект создан');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -96,7 +97,6 @@ class ProjectController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        //$userList = User::find()->select('username')->indexBy('id')->column();
         $projectUsers = $model->getUsersData();
 
         if ($this->loadModel($model) && $model->save()) {
@@ -106,12 +106,13 @@ class ProjectController extends Controller
                 }
             }
 
+            Yii::$app->session->setFlash('success', 'Изменения вступили в силу');
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
-            //'userList' => $userList
         ]);
     }
 
@@ -135,6 +136,7 @@ class ProjectController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        Yii::$app->session->setFlash('success', 'Прооект удалён');
 
         return $this->redirect(['index']);
     }

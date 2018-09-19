@@ -25,9 +25,10 @@ use common\models\User;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
+    <?php if (!$model->isNewRecord): ?>
+
     <?= $form->field($model, 'active')->dropDownList(Project::STATUS_LABELS) ?>
 
-    <?php if (!$model->isNewRecord): ?>
     <?= $form->field($model, Project::RELATION_PROJECT_USERS)->widget(MultipleInput::class, [
         'id' => 'project_widget',
         'max' => 10,

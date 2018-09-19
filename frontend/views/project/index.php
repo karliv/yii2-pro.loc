@@ -26,13 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            [
-                'attribute' => 'title',
-                'value' => function(Project $model) {
-                    return Html::a($model->title, ['view', 'id' => $model->id]);
-                },
-                'format' => 'html'
-            ],
+            'title',
             [
                 'attribute' => Project::RELATION_PROJECT_USERS.'role',
                 'label' => 'Role',
@@ -74,7 +68,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'created_at:datetime',
             'updated_at:datetime',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}'
+            ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

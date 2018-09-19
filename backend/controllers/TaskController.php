@@ -78,6 +78,7 @@ class TaskController extends Controller
         $projects = Yii::$app->projectService->getProjectArray();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Задача создана');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -120,6 +121,7 @@ class TaskController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        Yii::$app->session->setFlash('success', 'Задача удалена');
 
         return $this->redirect(['index']);
     }

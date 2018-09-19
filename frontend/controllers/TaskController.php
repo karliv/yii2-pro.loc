@@ -86,6 +86,7 @@ class TaskController extends Controller
         $executor = Yii::$app->projectService->hasExecutorArray();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Задача создана');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
