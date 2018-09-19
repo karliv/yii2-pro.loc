@@ -46,9 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'executor_id',
                 'label' => 'Исполнитель',
-                'value' => function($data) {
-                    return Html::a($data->executor->username, ['user/view', 'id' => $data->executor->id]);
-                },
+                'value' => 'executor.username',
                 'format' => 'html'
             ],
             'started_at:date',

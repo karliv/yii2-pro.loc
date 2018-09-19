@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'executor_id',
                 'label' => 'Исполнитель',
-                'value' => 'executor_id',
+                'value' => 'executor.username',
                 'format' => 'html'
             ],
             'started_at:date',
