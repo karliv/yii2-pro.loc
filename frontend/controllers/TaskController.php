@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\Project;
+use common\models\ProjectUser;
 use common\models\query\TaskQuery;
 use Yii;
 use common\models\Task;
@@ -49,7 +51,6 @@ class TaskController extends Controller
         $searchModel = new TaskSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->pagination->pageSize = 5;
-
         /** @var  $query TaskQuery */
         $query = $dataProvider->query;
         $query->byUser(Yii::$app->user->id);
@@ -81,6 +82,8 @@ class TaskController extends Controller
     public function actionCreate()
     {
         $model = new Task();
+        $projects = Yii::$app->projectService->getProjectArray();
+        $executor = Yii::$app->projectService->hasExecutorArray();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -88,6 +91,8 @@ class TaskController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'projects' => $projects,
+            'executor' => $executor,
         ]);
     }
 
@@ -101,26 +106,31 @@ class TaskController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $projects = Yii::$app->projectService->getProjectArray();
+        $executor = Yii::$app->projectService->hasExecutorArray();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Успешно');
+            Yii::$app->session->setFlash('success', 'Изменения вступили в силу');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'projects' => $projects,
+            'executor' => $executor,
         ]);
     }
 
     public function actionTake($id)
     {
         $model = $this->findModel($id);
-        $model->executor_id = Yii::$app->user->id;
-        $model->started_at = time();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+
+        Yii::$app->projectService->takeTask($model);
+        Yii::$app->session->setFlash('success', 'Задача взята!');
 
         return $this->render('view', [
             'model' => $model,

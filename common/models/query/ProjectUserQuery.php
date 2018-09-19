@@ -1,6 +1,7 @@
 <?php
 
 namespace common\models\query;
+use common\models\User;
 
 /**
  * This is the ActiveQuery class for [[\common\models\ProjectUser]].
@@ -17,6 +18,12 @@ class ProjectUserQuery extends \yii\db\ActiveQuery
         }
 
         return $this;
+    }
+
+    public function onlyActive()  {
+        $query = User::find()->select('status')->onlyActive(); //$this->andWhere(['id' => $userId]);
+
+        return $query;
     }
 
     /**

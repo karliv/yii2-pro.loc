@@ -17,19 +17,6 @@ class TaskQuery extends \yii\db\ActiveQuery
         return $this->andWhere(['project_id' => $query]);
     }
 
-//    public function onlyActive($userId, $active = null)  {
-//        $query = User::find()->select('status')->onlyActive($userId);
-//        return $this->andWhere(['project_id' => $query]);
-//
-//        $this->andWhere(['user_id' => $userId]);
-//
-//        if ($active) {
-//            $this->andWhere(['active' => $active]);
-//        }
-//
-//        return $this;
-//    }
-
     /**
      * {@inheritdoc}
      * @return \common\models\Task[]|array

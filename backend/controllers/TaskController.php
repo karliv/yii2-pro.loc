@@ -75,6 +75,7 @@ class TaskController extends Controller
     public function actionCreate()
     {
         $model = new Task();
+        $projects = Yii::$app->projectService->getProjectArray();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -82,6 +83,7 @@ class TaskController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'projects' => $projects,
         ]);
     }
 
@@ -95,13 +97,16 @@ class TaskController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $projects = Yii::$app->projectService->getProjectArray();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Изменения вступили в силу');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'projects' => $projects,
         ]);
     }
 

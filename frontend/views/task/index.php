@@ -28,12 +28,24 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'project.title',
-            'title',
-            'description:ntext',
-            'estimation',
+            [
+                'label' => 'Проект',
+                'value' => 'project.title'
+            ],
+            [
+                'attribute' => 'title',
+                'label' => 'Задача',
+                'value' => 'title'
+            ],
+            //'description:ntext',
+            [
+                'attribute' => 'estimation',
+                'label' => 'Оценка',
+                'value' => 'estimation'
+            ],
             [
                 'attribute' => 'executor_id',
+                'label' => 'Исполнитель',
                 'value' => function($data) {
                     return Html::a($data->executor->username, ['user/view', 'id' => $data->executor->id]);
                 },
@@ -43,10 +55,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'completed_at:date',
             [
                 'attribute' => 'created_by',
-                'value' => 'creator.username'
+                'label' => 'Создал',
+                'value' => function($data) {
+                    return Html::a($data->creator->username, ['user/view', 'id' => $data->creator->id]);
+                },
+                'format' => 'html'
             ],
             [
                 'attribute' => 'updated_by',
+                'label' => 'Обновил',
                 'value' => 'updater.username'
             ],
             'created_at:date',

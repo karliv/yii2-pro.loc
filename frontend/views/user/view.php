@@ -31,8 +31,4 @@ $this->title = 'Профиль пользователя: ' . $model->username;
         ],
     ]) ?>
 
-    <?= Comment::widget([
-        'model' => $model,
-    ]); ?>
-
 </div>

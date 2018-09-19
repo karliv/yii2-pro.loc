@@ -5,6 +5,8 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Task */
+/* @var array $projects */
+/* @var array $executor */
 
 $this->title = 'Create Task';
 $this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
@@ -16,6 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'projects' => $projects,
+        'executor' => $executor,
     ]) ?>
 
 </div>

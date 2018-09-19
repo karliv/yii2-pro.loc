@@ -3,6 +3,7 @@
 namespace common\models\query;
 use common\models\Project;
 use common\models\ProjectUser;
+use common\models\User;
 
 /**
  * This is the ActiveQuery class for [[\common\models\Task]].
@@ -11,12 +12,8 @@ use common\models\ProjectUser;
  */
 class UserQuery extends \yii\db\ActiveQuery
 {
-    public function onlyActive($userId, $active = null)  {
-        $this->andWhere(['id' => $userId]);
-
-        if ($active) {
-            $this->andWhere(['status' => $active]);
-        }
+    public function onlyActive()  {
+        $this->andWhere(['status' => User::STATUS_ACTIVE]);
 
         return $this;
     }
