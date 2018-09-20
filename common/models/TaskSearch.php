@@ -19,6 +19,7 @@ class TaskSearch extends Task
     {
         return [
             [['id', 'estimation', 'executor_id', 'started_at', 'completed_at', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['project_id'], 'string'],
             [['title', 'description'], 'safe'],
         ];
     }
@@ -61,6 +62,7 @@ class TaskSearch extends Task
         $query->andFilterWhere([
             'id' => $this->id,
             'estimation' => $this->estimation,
+            'project_id' => $this->project_id,
             'executor_id' => $this->executor_id,
             'started_at' => $this->started_at,
             'completed_at' => $this->completed_at,

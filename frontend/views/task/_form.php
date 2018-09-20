@@ -7,7 +7,6 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Task */
 /* @var $form yii\widgets\ActiveForm */
 /* @var array $projects */
-/* @var array $executor */
 
 ?>
 

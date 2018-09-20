@@ -22,8 +22,6 @@ use common\models\User;
 
     <?= $form->field($model, 'username')->textInput() ?>
     <?= $form->field($model, 'password')->passwordInput() ?>
-    <?= $form->field($model, 'email')->textInput() ?>
-    <?= $form->field($model, 'status')->dropDownList(User::STATUS_LABELS) ?>
 
     <?= $form->field($model, 'avatar')->fileInput(['accept' => 'image/*'])
         ->label(Html::img($model->getThumbUploadUrl('avatar', User::AVATAR_PREVIEW), ['class' => 'img-thumbnail'])) ?>

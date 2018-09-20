@@ -29,8 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
+                'attribute' => 'project_id',
                 'label' => 'Проект',
-                'value' => 'project.title'
+                'value' => function($data) {
+                    return Html::a($data->project->title, ['project/view', 'id' => $data->project_id]);
+                },
+                'format' => 'html'
+                //'value' => 'project.title'
             ],
             [
                 'attribute' => 'title',

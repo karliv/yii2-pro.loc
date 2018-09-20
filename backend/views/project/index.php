@@ -8,7 +8,7 @@ use common\models\Project;
 /* @var $searchModel common\models\ProjectSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Projects';
+$this->title = 'Проекты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="project-index">
@@ -27,7 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
 
             //'id',
-            'title',
+            [
+                'attribute' => 'title',
+                'label' => 'Название',
+            ],
 //            [
 //                'attribute' => 'description',
 //                'format' => 'ntext',
@@ -37,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //            ],
             [
                 'attribute' => Project::RELATION_PROJECT_USERS.'role',
-                'label' => 'Role',
+                'label' => 'Роль',
                 'value' => function(Project $model) {
                     return join(', ', $model->getProjectUsers()->select('role')
                         ->where(['user_id' => \Yii::$app->user->id])->column());
@@ -47,17 +50,41 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'active',
                 'filter' => Project::STATUS_LABELS,
-
+                'label' => 'Активность',
                 'value' => function(Project $model){return Project::STATUS_LABELS[$model->active];}
             ],
             [
-                'attribute' => 'creator',
-                'value' => 'creator.username'
+                'attribute' => 'created_at',
+                'label' => 'Создал',
+                'value' => function(Project $model) {
+                    return Html::a($model->creator->username, ['user/view', 'id' => $model->creator->id]);
+                },
+                'format' => 'html'
             ],
             [
-                'attribute' => 'updater',
-                'value' => 'updater.username'
+                'attribute' => 'updated_at',
+                'label' => 'Обновил',
+                'value' => function(Project $model) {
+                    return Html::a($model->updater->username, ['user/view', 'id' => $model->updater->id]);
+                },
+                'format' => 'html'
             ],
+
+            //[
+            //    'attribute' => 'created_at',
+            //    'label' => 'Создано',
+            //    'value' => function($data) {
+            //        return date('M d, Y g:i a', $data->created_at);
+            //    }
+            //],
+
+            //[
+            //    'attribute' => 'updated_at',
+            //    'label' => 'Обнавленно',
+            //    'value' => function($data) {
+            //        return date('M d, Y g:i A', $data->updated_at);
+            //    }
+            //],
             'created_at:datetime',
             'updated_at:datetime',
 

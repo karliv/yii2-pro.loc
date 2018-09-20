@@ -64,7 +64,7 @@ class UserController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('view', [
+        return $this->render('update', [
             'model' => $model,
         ]);
     }
