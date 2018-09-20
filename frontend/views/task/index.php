@@ -10,7 +10,7 @@ use common\models\Task;
 /* @var $searchModel common\models\TaskSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Tasks';
+$this->title = 'Задачи';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="task-index">
@@ -83,13 +83,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'visibleButtons' => [
                     'update' => function (Task $model, $key, $index) {
-                        return Yii::$app->projectService->hasRole($model->project, Yii::$app->user->identity, ProjectUser::ROLE_MANAGER);
+                        return Yii::$app->taskService->canManage($model->project, Yii::$app->user->identity);
                     },
                     'delete' => function (Task $model, $key, $index) {
-                        return Yii::$app->projectService->hasRole($model->project, Yii::$app->user->identity, ProjectUser::ROLE_MANAGER);
+                        return Yii::$app->taskService->canManage($model->project, Yii::$app->user->identity);
                     },
                     'take' => function (Task $model, $key, $index) {
-                        return Yii::$app->projectService->hasRole($model->project, Yii::$app->user->identity, ProjectUser::ROLE_DEVELOPER);
+                        return Yii::$app->taskService->canTake($model->project, Yii::$app->user->identity);
                     },
                 ]
             ],

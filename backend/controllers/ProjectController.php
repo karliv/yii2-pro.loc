@@ -98,6 +98,7 @@ class ProjectController extends Controller
     {
         $model = $this->findModel($id);
         $projectUsers = $model->getUsersData();
+        $activeUser = Yii::$app->projectService->getActiveUser();
 
         if ($this->loadModel($model) && $model->save()) {
             if ($diffRoles = array_diff_assoc($model->getUsersData(), $projectUsers)) {
@@ -113,6 +114,7 @@ class ProjectController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'activeUser' => $activeUser,
         ]);
     }
 

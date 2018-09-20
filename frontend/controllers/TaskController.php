@@ -83,7 +83,7 @@ class TaskController extends Controller
     {
         $model = new Task();
         $projects = Yii::$app->projectService->getProjectArray();
-        $executor = Yii::$app->projectService->hasExecutorArray();
+        //$executor = Yii::$app->projectService->hasExecutorArray();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Задача создана');
@@ -93,7 +93,7 @@ class TaskController extends Controller
         return $this->render('create', [
             'model' => $model,
             'projects' => $projects,
-            'executor' => $executor,
+            //'executor' => $executor,
         ]);
     }
 
@@ -108,7 +108,7 @@ class TaskController extends Controller
     {
         $model = $this->findModel($id);
         $projects = Yii::$app->projectService->getProjectArray();
-        $executor = Yii::$app->projectService->hasExecutorArray();
+        //$executor = Yii::$app->projectService->hasExecutorArray();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Изменения вступили в силу');
@@ -118,7 +118,7 @@ class TaskController extends Controller
         return $this->render('update', [
             'model' => $model,
             'projects' => $projects,
-            'executor' => $executor,
+            //'executor' => $executor,
         ]);
     }
 

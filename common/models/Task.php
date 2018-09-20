@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\models\query\TaskQuery;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -100,7 +101,7 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return TaskQuery|\yii\db\ActiveQuery
      */
     public function getExecutor()
     {

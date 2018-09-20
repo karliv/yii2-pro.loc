@@ -18,6 +18,9 @@ return [
         'projectService' => [
             'class' => \common\services\ProjectService::class,
         ],
+        'taskService' => [
+            'class' => \common\services\TaskService::class,
+        ],
         'i18n' => [
             'translations' => [
                 'yii2mod.comments' => [

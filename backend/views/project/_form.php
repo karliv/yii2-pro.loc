@@ -10,8 +10,8 @@ use common\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Project */
-/* @var $userList  */
 /* @var $form yii\widgets\ActiveForm */
+/* @var array $activeUser */
 ?>
 
 <div class="project-form">
@@ -51,7 +51,7 @@ use common\models\User;
                 'name' => 'user_id',
                 'type' => 'dropDownList',
                 'title' => 'User',
-                'items' => User::find()->select('username')->indexBy('id')->column()
+                'items' => $activeUser
             ],
             [
                 'name' => 'role',

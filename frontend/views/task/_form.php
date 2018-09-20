@@ -21,7 +21,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'estimation')->textInput() ?>
 
+    <?php if ($model->isNewRecord): ?>
+
     <?= $form->field($model, 'project_id')->dropDownList($projects) ?>
+
+    <?php endif; ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
