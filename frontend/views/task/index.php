@@ -74,27 +74,39 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {update} {delete} {take}',
+                'template' => '{view} {update} {delete} {take} {surrender}',
                 'buttons' => [
-                        'take' => function ($url, Task $model, $key) {
-                            $icon = \yii\bootstrap\Html::icon('ok');
-                            return Html::a($icon, ['task/take', 'id' => $model->id], [
-                                'data' => [
-                                    'confirm' => 'Вы готовы взяться за этоу задачу?',
-                                    'method' => 'post',
-                                ],
-                            ]);
-                        }
+                    'take' => function ($url, Task $model, $key) {
+                        $icon = \yii\bootstrap\Html::icon('play');
+                        return Html::a($icon, ['task/take', 'id' => $model->id], [
+                            'data' => [
+                                'confirm' => 'Вы готовы взяться за этоу задачу?',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    },
+                    'surrender' => function ($url, Task $model, $key) {
+                        $icon = \yii\bootstrap\Html::icon('ok');
+                        return Html::a($icon, ['task/complete', 'id' => $model->id], [
+                            'data' => [
+                                'confirm' => 'Задача выполнена?',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    }
                 ],
                 'visibleButtons' => [
-                    'update' => function (Task $model, $key, $index) {
+                    'update' => function (Task $model) {
                         return Yii::$app->taskService->canManage($model->project, Yii::$app->user->identity);
                     },
-                    'delete' => function (Task $model, $key, $index) {
+                    'delete' => function (Task $model) {
                         return Yii::$app->taskService->canManage($model->project, Yii::$app->user->identity);
                     },
-                    'take' => function (Task $model, $key, $index) {
-                        return Yii::$app->taskService->canTake($model->project, Yii::$app->user->identity);
+                    'take' => function (Task $model) {
+                        return Yii::$app->taskService->canTake($model->project, Yii::$app->user->identity) ? $model->executor_id == null : '';
+                    },
+                    'surrender' => function (Task $model) {
+                        return Yii::$app->taskService->canTake($model->project, Yii::$app->user->identity) ? $model->executor && !$model->completed_at : '';
                     },
                 ]
             ],

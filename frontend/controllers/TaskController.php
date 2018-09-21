@@ -51,6 +51,7 @@ class TaskController extends Controller
         $searchModel = new TaskSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->pagination->pageSize = 5;
+
         /** @var  $query TaskQuery */
         $query = $dataProvider->query;
         $query->byUser(Yii::$app->user->id);
@@ -130,8 +131,24 @@ class TaskController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        Yii::$app->projectService->takeTask($model);
+        Yii::$app->taskService->takeTask($model);
         Yii::$app->session->setFlash('success', 'Задача взята!');
+
+        return $this->render('view', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionComplete($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        Yii::$app->taskService->completeTask($model);
+        Yii::$app->session->setFlash('success', 'Задача сдана!');
 
         return $this->render('view', [
             'model' => $model,

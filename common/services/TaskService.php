@@ -24,7 +24,7 @@ class TaskService extends Component
     }
 
     //public function canComplete(Task $task, User $user) {
-    //    return Yii::$app->projectService->hasRoles($task, $user);
+    //    return $this->hasEx($task, $user);
     //}
 
     public function takeTask(Task $task) {
@@ -33,7 +33,9 @@ class TaskService extends Component
         return $task->save();
     }
 
-    //public function completeTask(Project $project, User $user) {
-    //    return Yii::$app->projectService->hasRoles($project, $user, [ProjectUser::ROLE_MANAGER]);
-    //}
+    public function completeTask(Task $task) {
+        $task->executor_id = Yii::$app->user->id;
+        $task->completed_at = time();
+        return $task->save();
+    }
 }
