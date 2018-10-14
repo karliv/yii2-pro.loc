@@ -23,9 +23,15 @@ class TaskService extends Component
         return Yii::$app->projectService->hasRole($project, $user, ProjectUser::ROLE_DEVELOPER);
     }
 
-    //public function canComplete(Task $task, User $user) {
-    //    return $this->hasEx($task, $user);
-    //}
+//    public function canTake(Task $task, User $user) {
+//        return $task->executor_id == null and !$task->started_at ;
+//    }
+
+    public function canComplete(Task $task, User $user) {
+        return $task->find()->byExecute($user->id)->select('id')->column() and
+            $task->executor_id = $user->id and !$task->completed_at and $task->started_at;
+        //return $user->getExecutor()->byComplete($task->executor_id)->select('')->column() and !$task->completed_at;
+    }
 
     public function takeTask(Task $task) {
         $task->executor_id = Yii::$app->user->id;

@@ -41,18 +41,12 @@ class ProjectService extends Component
 //        return $this->hasRoles($project, $user, [ProjectUser::ROLE_MANAGER]);
 //    }
 
-//    public function takeTask(Task $task) {
-//        $task->executor_id = Yii::$app->user->id;
-//        $task->started_at = time();
-//        return $task->save();
-//    }
-
     public function getProjectArray() {
         return Project::find()->byUser(Yii::$app->user->identity)->select('title')->indexBy('id')->column();
     }
 
     public function getActiveUser() {
-        return ProjectUser::find()->onlyActive()->select('username')->indexBy('id')->column();
+        return User::find()->onlyActive()->select('username')->indexBy('id')->column();
     }
 
     /**

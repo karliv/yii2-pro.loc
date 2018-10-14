@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\models\query\TaskQuery;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -339,13 +340,13 @@ class User extends ActiveRecord implements IdentityInterface
 //        return $this->hasMany(Task::className(), ['created_by' => 'id']);
 //    }
 //
-//    /**
-//     * @return \yii\db\ActiveQuery
-//     */
-//    public function getTasks0()
-//    {
-//        return $this->hasMany(Task::className(), ['executor_id' => 'id']);
-//    }
+    /**
+     * @return TaskQuery|\yii\db\ActiveQuery
+     */
+    public function getExecutor()
+    {
+        return $this->hasMany(Task::className(), ['executor_id' => 'id']);
+    }
 //
 //    /**
 //     * @return \yii\db\ActiveQuery

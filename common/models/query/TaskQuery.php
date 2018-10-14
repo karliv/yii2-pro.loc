@@ -1,9 +1,7 @@
 <?php
 
 namespace common\models\query;
-use common\models\Project;
 use common\models\ProjectUser;
-use common\models\User;
 
 /**
  * This is the ActiveQuery class for [[\common\models\Task]].
@@ -17,11 +15,19 @@ class TaskQuery extends \yii\db\ActiveQuery
         return $this->andWhere(['project_id' => $query]);
     }
 
-    public function byEx($userId) {
-        //$this->andWhere(['executor_id' => $userId]);
-        //return $this;
-        $query = ProjectUser::find()->select('executor_id')->byUser($userId);
-        return $this->andWhere(['executor_id' => $query]);
+//    public function byComplete($ex) {
+//        $this->andWhere(['completed_at' => null]);
+//        //$this->andWhere(['executor_id' => $ex]);
+//
+//        return $this;
+//    }
+
+    public function byExecute($ex) {
+        //$query = User::find()->select('id')->byComplete($ex);
+        $this->where(['executor_id' => $ex]);
+        $this->andWhere(['completed_at' => null]);
+        //$this->andWhere(['not', ['started_at' => null]]);
+        return $this;
     }
 
     /**

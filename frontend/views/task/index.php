@@ -5,10 +5,12 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use common\models\ProjectUser;
 use common\models\Task;
+use common\models\User;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\TaskSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var array $projects */
 
 $this->title = 'Задачи';
 $this->params['breadcrumbs'][] = $this->title;
@@ -31,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'project_id',
                 'label' => 'Проект',
+                //'search' => '',
                 'value' => function($data) {
                     return Html::a($data->project->title, ['project/view', 'id' => $data->project_id]);
                 },
@@ -67,7 +70,11 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'updated_by',
                 'label' => 'Обновил',
-                'value' => 'updater.username'
+                'value' => 'updater.username',
+                //'value' => function($data) {
+                //    return Html::a($data->updater->username, ['user/view', 'id' => $data->updater->id]) ? $data->updated_by == null : '';
+                //},
+                'format' => 'html'
             ],
             'created_at:date',
             'updated_at:date',
@@ -104,9 +111,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'take' => function (Task $model) {
                         return Yii::$app->taskService->canTake($model->project, Yii::$app->user->identity) ? $model->executor_id == null : '';
+                        //return Yii::$app->taskService->canTake($model, $model->executor);
                     },
                     'surrender' => function (Task $model) {
-                        return Yii::$app->taskService->canTake($model->project, Yii::$app->user->identity) ? $model->executor && !$model->completed_at : '';
+                        return Yii::$app->taskService->canComplete($model, Yii::$app->user->identity);
                     },
                 ]
             ],
